@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.0.1...v1.1.0) (2026-01-07)
+
+### Features
+
+* modified readme ([9d90623](https://github.com/kristijansoldo/wp-hoptown-rentals/commit/9d906231e93cf2b60b8c70308f305484e9d845e5))
+
 ## [1.0.1](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.0.0...v1.0.1) (2026-01-07)
 
 ### Bug Fixes
