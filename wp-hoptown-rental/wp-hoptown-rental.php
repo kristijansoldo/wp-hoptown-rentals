@@ -3,7 +3,7 @@
  * Plugin Name: Hoptown Rental
  * Plugin URI: https://hoptown.com
  * Description: Complete inflatable rental management system with booking calendar, pricing rules, and delivery options
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: Hoptown
  * Author URI: https://hoptown.com
  * License: GPL-2.0+
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'HOPTOWN_RENTAL_VERSION', '1.0.1' );
+define( 'HOPTOWN_RENTAL_VERSION', '1.1.0' );
 define( 'HOPTOWN_RENTAL_TEXTDOMAIN', 'hoptown-rental' );
 define( 'HOPTOWN_RENTAL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HOPTOWN_RENTAL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
