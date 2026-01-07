@@ -1,0 +1,319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Hoptown Rental 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-07 00:00+0000\n"
+"PO-Revision-Date: 2024-01-07 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: hr_HR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Inflatables"
+msgstr "Napuhanci"
+
+msgid "Inflatable"
+msgstr "Napuhanac"
+
+msgid "Inflatable Archives"
+msgstr "Arhiva napuhanaca"
+
+msgid "Inflatable Attributes"
+msgstr "Svojstva napuhanaca"
+
+msgid "Parent Inflatable:"
+msgstr "Nadređeni napuhanac:"
+
+msgid "All Inflatables"
+msgstr "Svi napuhanci"
+
+msgid "Add New Inflatable"
+msgstr "Dodaj novi napuhanac"
+
+msgid "Add New"
+msgstr "Dodaj novo"
+
+msgid "New Inflatable"
+msgstr "Novi napuhanac"
+
+msgid "Edit Inflatable"
+msgstr "Uredi napuhanac"
+
+msgid "Update Inflatable"
+msgstr "Ažuriraj napuhanac"
+
+msgid "View Inflatable"
+msgstr "Pregledaj napuhanac"
+
+msgid "View Inflatables"
+msgstr "Pregledaj napuhance"
+
+msgid "Search Inflatable"
+msgstr "Pretraži napuhance"
+
+msgid "Not found"
+msgstr "Nije pronađeno"
+
+msgid "Not found in Trash"
+msgstr "Nije pronađeno u smeću"
+
+msgid "Featured Image"
+msgstr "Istaknuta slika"
+
+msgid "Set featured image"
+msgstr "Postavi istaknutu sliku"
+
+msgid "Remove featured image"
+msgstr "Ukloni istaknutu sliku"
+
+msgid "Use as featured image"
+msgstr "Koristi kao istaknutu sliku"
+
+msgid "Insert into inflatable"
+msgstr "Umetni u napuhanac"
+
+msgid "Uploaded to this inflatable"
+msgstr "Učitano u ovaj napuhanac"
+
+msgid "Inflatables list"
+msgstr "Popis napuhanaca"
+
+msgid "Inflatables list navigation"
+msgstr "Navigacija popisa napuhanaca"
+
+msgid "Filter inflatables list"
+msgstr "Filtriraj popis napuhanaca"
+
+msgid "Inflatable rental items"
+msgstr "Najam napuhanaca"
+
+msgid "Bookings"
+msgstr "Rezervacije"
+
+msgid "Booking"
+msgstr "Rezervacija"
+
+msgid "Booking Archives"
+msgstr "Arhiva rezervacija"
+
+msgid "Booking Attributes"
+msgstr "Svojstva rezervacije"
+
+msgid "Parent Booking:"
+msgstr "Nadređena rezervacija:"
+
+msgid "All Bookings"
+msgstr "Sve rezervacije"
+
+msgid "Add New Booking"
+msgstr "Dodaj novu rezervaciju"
+
+msgid "New Booking"
+msgstr "Nova rezervacija"
+
+msgid "Edit Booking"
+msgstr "Uredi rezervaciju"
+
+msgid "Update Booking"
+msgstr "Ažuriraj rezervaciju"
+
+msgid "View Booking"
+msgstr "Pregledaj rezervaciju"
+
+msgid "View Bookings"
+msgstr "Pregledaj rezervacije"
+
+msgid "Search Booking"
+msgstr "Pretraži rezervacije"
+
+msgid "Bookings list"
+msgstr "Popis rezervacija"
+
+msgid "Bookings list navigation"
+msgstr "Navigacija popisa rezervacija"
+
+msgid "Filter bookings list"
+msgstr "Filtriraj popis rezervacija"
+
+msgid "Inflatable rental bookings"
+msgstr "Rezervacije najma napuhanaca"
+
+msgid "Booking Details"
+msgstr "Detalji rezervacije"
+
+msgid "Customer Details"
+msgstr "Podaci o kupcu"
+
+msgid "Pricing Details"
+msgstr "Cijene"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Booking Date"
+msgstr "Datum rezervacije"
+
+msgid "Delivery"
+msgstr "Dostava"
+
+msgid "Pickup"
+msgstr "Preuzimanje"
+
+msgid "Delivery Address"
+msgstr "Adresa dostave"
+
+msgid "Pickup Time"
+msgstr "Vrijeme preuzimanja"
+
+msgid "Name"
+msgstr "Ime"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Note"
+msgstr "Napomena"
+
+msgid "Rental Price"
+msgstr "Cijena najma"
+
+msgid "Delivery Price"
+msgstr "Cijena dostave"
+
+msgid "Total"
+msgstr "Ukupno"
+
+msgid "Pricing"
+msgstr "Cijene"
+
+msgid "Delivery Options"
+msgstr "Opcije dostave"
+
+msgid "Gallery"
+msgstr "Galerija"
+
+msgid "Base Price (€)"
+msgstr "Osnovna cijena (€)"
+
+msgid "Default rental price per day"
+msgstr "Zadana cijena najma po danu"
+
+msgid "Use Day-Specific Pricing"
+msgstr "Koristi cijene po danu"
+
+msgid "Enable different prices for weekdays and weekends"
+msgstr "Omogući različite cijene za radne dane i vikend"
+
+msgid "Weekday Price (€)"
+msgstr "Cijena radnim danom (€)"
+
+msgid "Price for Monday-Friday"
+msgstr "Cijena za pon-pet"
+
+msgid "Weekend Price (€)"
+msgstr "Cijena vikendom (€)"
+
+msgid "Price for Saturday-Sunday"
+msgstr "Cijena za sub-ned"
+
+msgid "Delivery Price (€)"
+msgstr "Cijena dostave (€)"
+
+msgid "Additional charge for delivery"
+msgstr "Dodatna naknada za dostavu"
+
+msgid "Add Images"
+msgstr "Dodaj slike"
+
+msgid "Select Gallery Images"
+msgstr "Odaberi slike galerije"
+
+msgid "Add to Gallery"
+msgstr "Dodaj u galeriju"
+
+msgid "Available"
+msgstr "Dostupno"
+
+msgid "Booked"
+msgstr "Rezervirano"
+
+msgid "Selected"
+msgstr "Odabrano"
+
+msgid "Selected Date"
+msgstr "Odabrani datum"
+
+msgid "Please select a date from the calendar"
+msgstr "Odaberite datum iz kalendara"
+
+msgid "Rental Price:"
+msgstr "Cijena najma:"
+
+msgid "Delivery Price:"
+msgstr "Cijena dostave:"
+
+msgid "Total:"
+msgstr "Ukupno:"
+
+msgid "Your Information"
+msgstr "Vaši podaci"
+
+msgid "Name and Surname"
+msgstr "Ime i prezime"
+
+msgid "Delivery Method"
+msgstr "Način dostave"
+
+msgid "Reserve"
+msgstr "Rezerviraj"
+
+msgid "Book This Inflatable"
+msgstr "Rezerviraj napuhanac"
+
+msgid "No inflatables found."
+msgstr "Nema pronađenih napuhanaca."
+
+msgid "Please provide an inflatable ID."
+msgstr "Unesite ID napuhanca."
+
+msgid "Inflatable not found"
+msgstr "Napuhanac nije pronađen"
+
+msgid "Date not available"
+msgstr "Datum nije dostupan"
+
+msgid "Security check failed"
+msgstr "Sigurnosna provjera nije uspjela"
+
+msgid "Please fill all required fields"
+msgstr "Popunite sva obavezna polja"
+
+msgid "Invalid email address"
+msgstr "Neispravna email adresa"
+
+msgid "Please provide delivery address"
+msgstr "Unesite adresu dostave"
+
+msgid "Please select pickup time"
+msgstr "Odaberite vrijeme preuzimanja"
+
+msgid "Booking submitted successfully!"
+msgstr "Rezervacija je uspješno poslana!"
+
+msgid "This date is not available."
+msgstr "Ovaj datum nije dostupan."
+
+msgid "Error fetching pricing information."
+msgstr "Greška pri dohvaćanju cijene."
+
+msgid "An error occurred. Please try again."
+msgstr "Došlo je do greške. Pokušajte ponovno."
+
+msgid "Submitting..."
+msgstr "Slanje..."

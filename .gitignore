@@ -1,0 +1,23 @@
+# WordPress
+wp-config.php
+
+# Docker volumes
+mysql_data/
+wordpress_data/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.claude

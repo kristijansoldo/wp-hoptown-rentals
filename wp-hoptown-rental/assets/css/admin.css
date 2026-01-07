@@ -1,0 +1,93 @@
+/**
+ * Admin CSS
+ *
+ * @package Hoptown_Rental
+ */
+
+/* Meta box styling */
+.hoptown-gallery-container {
+	padding: 10px 0;
+}
+
+.hoptown-gallery-images {
+	list-style: none;
+	margin: 0 0 15px 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.hoptown-gallery-images li {
+	position: relative;
+	display: inline-block;
+}
+
+.hoptown-gallery-images img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.hoptown-remove-gallery-image {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background: #dc3232;
+	color: white;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	line-height: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 16px;
+	transition: background 0.2s;
+}
+
+.hoptown-remove-gallery-image:hover {
+	background: #a00;
+	color: white;
+}
+
+.hoptown-add-gallery-images {
+	margin-top: 10px;
+}
+
+/* Form table improvements */
+.form-table th {
+	width: 200px;
+}
+
+.form-table .description {
+	font-size: 13px;
+	color: #666;
+	margin-top: 5px;
+}
+
+/* Booking details styling */
+#hoptown_booking_details .form-table td,
+#hoptown_customer_details .form-table td,
+#hoptown_pricing_details .form-table td {
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+#hoptown_booking_details .form-table th,
+#hoptown_customer_details .form-table th,
+#hoptown_pricing_details .form-table th {
+	font-weight: 600;
+	color: #555;
+}
+
+#hoptown_pricing_details .form-table {
+	margin-top: 0;
+}
+
+#hoptown_pricing_details .form-table tr:last-child {
+	border-top: 2px solid #ddd;
+	padding-top: 10px;
+}

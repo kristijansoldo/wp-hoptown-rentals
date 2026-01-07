@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: hoptown_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress123
+      MYSQL_ROOT_PASSWORD: rootpassword123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - hoptown_network
+    ports:
+      - "3306:3306"
+
+  wordpress:
+    image: wordpress:latest
+    container_name: hoptown_wordpress
+    restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress123
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wp-hoptown-rental:/var/www/html/wp-content/plugins/wp-hoptown-rental
+    ports:
+      - "8080:80"
+    networks:
+      - hoptown_network
+
+volumes:
+  mysql_data:
+  wordpress_data:
+
+networks:
+  hoptown_network:
+    driver: bridge
