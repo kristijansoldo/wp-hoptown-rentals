@@ -5,12 +5,19 @@
     ["@semantic-release/release-notes-generator", {"preset": "conventionalcommits"}],
     ["@semantic-release/changelog", {"changelogFile": "CHANGELOG.md"}],
     ["@semantic-release/exec", {
-      "prepareCmd": "sed -i 's/Version: .*/Version: ${nextRelease.version}/' wp-hoptown-rental/wp-hoptown-rental.php && sed -i \"s/define( 'HOPTOWN_RENTAL_VERSION', '[^']*' );/define( 'HOPTOWN_RENTAL_VERSION', '${nextRelease.version}' );/\" wp-hoptown-rental/wp-hoptown-rental.php"
+      "prepareCmd": "sed -i 's/Version: .*/Version: ${nextRelease.version}/' wp-hoptown-rental/wp-hoptown-rental.php && sed -i \"s/define( 'HOPTOWN_RENTAL_VERSION', '[^']*' );/define( 'HOPTOWN_RENTAL_VERSION', '${nextRelease.version}' );/\" wp-hoptown-rental/wp-hoptown-rental.php && zip -r \"wp-hoptown-rental-${nextRelease.version}.zip\" wp-hoptown-rental"
     }],
     ["@semantic-release/git", {
       "assets": ["CHANGELOG.md", "wp-hoptown-rental/wp-hoptown-rental.php"],
       "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
     }],
-    "@semantic-release/github"
+    ["@semantic-release/github", {
+      "assets": [
+        {
+          "path": "wp-hoptown-rental-${nextRelease.version}.zip",
+          "label": "wp-hoptown-rental-${nextRelease.version}.zip"
+        }
+      ]
+    }]
   ]
 }
