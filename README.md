@@ -53,11 +53,17 @@ wp-hoptown-rental/
 │       ├── admin.js
 │       └── booking.js
 └── templates/                     # Template files
+    ├── archive-hoptown_inflatable.php
+    ├── single-hoptown_inflatable.php
     ├── booking-calendar.php
     └── booking-form.php
 ```
 
 ## Features
+
+### Localization
+- Built-in Croatian translations for admin and frontend
+- Slug switches to `/napuhanci/` when site language is Croatian
 
 ### Admin Features
 - Create and manage inflatables
@@ -93,6 +99,11 @@ wp-hoptown-rental/
 7. Click **Publish**
 
 ### 2. Displaying Inflatables in Your Theme
+
+This plugin ships with built-in archive and single templates for inflatables.
+If you want to override them, place copies in your theme under:
+`/hoptown-rental/archive-hoptown_inflatable.php` and
+`/hoptown-rental/single-hoptown_inflatable.php`.
 
 #### Method 1: Using Shortcodes (Recommended for beginners)
 
@@ -163,7 +174,9 @@ endif;
 
 **B. Display single inflatable with booking system:**
 
-Create a custom template `single-hoptown_inflatable.php` in your theme:
+The plugin already provides a single template. If you want a custom one,
+create `single-hoptown_inflatable.php` in your theme or under
+`/hoptown-rental/` and adjust as needed:
 
 ```php
 <?php
@@ -314,6 +327,7 @@ $booking_data = array(
     'customer_name'    => 'John Doe',
     'customer_email'   => 'john@example.com',
     'customer_phone'   => '+1234567890',
+    'customer_note'    => 'Need setup after 5 PM.',
     'delivery_method'  => 'delivery', // or 'pickup'
     'delivery_address' => '123 Main St, City',
     'pickup_time'      => '14:00', // if pickup
@@ -344,6 +358,7 @@ The plugin uses WordPress Custom Post Types - no custom database tables needed!
 - `_hoptown_customer_name` - Customer name
 - `_hoptown_customer_email` - Customer email
 - `_hoptown_customer_phone` - Customer phone
+- `_hoptown_customer_note` - Customer note
 - `_hoptown_delivery_method` - delivery or pickup
 - `_hoptown_delivery_address` - Delivery address
 - `_hoptown_pickup_time` - Pickup time

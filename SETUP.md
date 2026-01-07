@@ -104,6 +104,7 @@ See README.md for theme integration examples.
    - Name and Surname
    - Email
    - Phone
+   - Note (optional)
    - Select Delivery or Pickup
 4. Click **Reserve**
 5. Check **Bookings** in admin to see the booking
@@ -189,6 +190,12 @@ Wait 1-2 minutes for MySQL to fully start, then refresh the page.
 1. Clear browser cache (Ctrl+Shift+R or Cmd+Shift+R)
 2. Disable WordPress caching plugins
 3. Check if files are saved correctly
+
+### Issue: 404 on archive/single URLs
+
+**Solution:**
+1. Go to **Settings → Permalinks** and click **Save**
+2. If site language is Croatian, use `/napuhanci/` instead of `/inflatables/`
 
 ## Checking Logs
 

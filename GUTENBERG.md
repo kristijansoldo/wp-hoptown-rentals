@@ -3,6 +3,7 @@
 ## Overview
 
 Currently, the plugin uses **shortcodes** to display the booking calendar and form. This is the simplest and most compatible approach that works with all themes.
+Archive and single templates for inflatables are already provided by the plugin, with optional theme overrides.
 
 If you want to add Gutenberg blocks in the future for better integration, here's how to do it:
 

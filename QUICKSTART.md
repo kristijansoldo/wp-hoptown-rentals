@@ -33,7 +33,11 @@ Wait 1-2 minutes for services to start.
    ```
    - **Publish**
 
-3. Click **View Page** and test booking!
+3. Visit the archive/single templates:
+   - `http://localhost:8080/inflatables/` (or `/napuhanci/` in HR)
+   - Click an inflatable to open the single page
+
+4. Click **View Page** and test booking!
 
 ## More Details
 
