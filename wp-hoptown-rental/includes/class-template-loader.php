@@ -14,7 +14,7 @@ class Hoptown_Rental_Template_Loader {
 	 * Initialize the template loader.
 	 */
 	public function __construct() {
-		add_filter( "template_include", array( $this, "template_loader" ) );
+		add_filter( "template_include", array( $this, "template_loader" ), 99 );
 	}
 
 	/**
