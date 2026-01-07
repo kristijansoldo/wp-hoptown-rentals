@@ -34,9 +34,12 @@ class Hoptown_Rental {
 	 */
 	public function __construct() {
 		$this->version     = HOPTOWN_RENTAL_VERSION;
-		$this->plugin_name = "hoptown-rental";
+		$this->plugin_name = HOPTOWN_RENTAL_TEXTDOMAIN;
 
 		add_action( "plugins_loaded", array( $this, "load_textdomain" ) );
+		add_action( "phpmailer_init", array( $this, "configure_mailer" ) );
+		add_filter( "wp_mail_from", array( $this, "filter_mail_from" ) );
+		add_filter( "wp_mail_from_name", array( $this, "filter_mail_from_name" ) );
 
 		$this->load_dependencies();
 		$this->define_admin_hooks();
@@ -50,6 +53,16 @@ class Hoptown_Rental {
 	 * Load the required dependencies for this plugin.
 	 */
 	private function load_dependencies() {
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/class-meta.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/class-booking.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/class-inflatable.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/value-objects/class-money.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/value-objects/class-date-value.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/value-objects/class-time-value.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/repositories/class-booking-repository.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/repositories/class-inflatable-repository.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/services/class-booking-service.php";
+		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/services/class-inflatable-service.php";
 		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/post-types/class-inflatable-post-type.php";
 		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/post-types/class-booking-post-type.php";
 		require_once HOPTOWN_RENTAL_PLUGIN_DIR . "includes/admin/class-admin.php";
@@ -80,6 +93,8 @@ class Hoptown_Rental {
 
 		add_action( "admin_enqueue_scripts", array( $plugin_admin, "enqueue_styles" ) );
 		add_action( "admin_enqueue_scripts", array( $plugin_admin, "enqueue_scripts" ) );
+		add_action( "admin_menu", array( $plugin_admin, "register_settings_menu" ) );
+		add_action( "admin_init", array( $plugin_admin, "register_settings" ) );
 
 		$inflatable_meta = new Hoptown_Rental_Inflatable_Meta_Boxes();
 		add_action( "add_meta_boxes", array( $inflatable_meta, "add_meta_boxes" ) );
@@ -134,10 +149,72 @@ class Hoptown_Rental {
 	public function load_textdomain() {
 		$plugin_rel_path = dirname( plugin_basename( HOPTOWN_RENTAL_PLUGIN_DIR . 'wp-hoptown-rental.php' ) ) . '/languages/';
 		load_plugin_textdomain(
-			"hoptown-rental",
+			HOPTOWN_RENTAL_TEXTDOMAIN,
 			false,
 			$plugin_rel_path
 		);
+	}
+
+	/**
+	 * Configure SMTP when WP_MAIL_* constants are set.
+	 *
+	 * @param PHPMailer $phpmailer PHPMailer instance.
+	 */
+	public function configure_mailer( $phpmailer ) {
+		if ( ! defined( 'WP_MAIL_SMTP_HOST' ) ) {
+			return;
+		}
+
+		$phpmailer->isSMTP();
+		$phpmailer->Host = WP_MAIL_SMTP_HOST;
+
+		if ( defined( 'WP_MAIL_SMTP_PORT' ) ) {
+			$phpmailer->Port = WP_MAIL_SMTP_PORT;
+		}
+
+		if ( defined( 'WP_MAIL_SMTP_AUTH' ) ) {
+			$phpmailer->SMTPAuth = (bool) WP_MAIL_SMTP_AUTH;
+		}
+
+		if ( defined( 'WP_MAIL_SMTP_USERNAME' ) ) {
+			$phpmailer->Username = WP_MAIL_SMTP_USERNAME;
+		}
+
+		if ( defined( 'WP_MAIL_SMTP_PASSWORD' ) ) {
+			$phpmailer->Password = WP_MAIL_SMTP_PASSWORD;
+		}
+
+		if ( defined( 'WP_MAIL_SMTP_SECURE' ) ) {
+			$phpmailer->SMTPSecure = WP_MAIL_SMTP_SECURE;
+		}
+	}
+
+	/**
+	 * Filter mail from address.
+	 *
+	 * @param string $from Email address.
+	 * @return string
+	 */
+	public function filter_mail_from( $from ) {
+		if ( defined( 'WP_MAIL_FROM' ) ) {
+			return WP_MAIL_FROM;
+		}
+
+		return $from;
+	}
+
+	/**
+	 * Filter mail from name.
+	 *
+	 * @param string $name From name.
+	 * @return string
+	 */
+	public function filter_mail_from_name( $name ) {
+		if ( defined( 'WP_MAIL_FROM_NAME' ) ) {
+			return WP_MAIL_FROM_NAME;
+		}
+
+		return $name;
 	}
 
 	/**

@@ -30,6 +30,7 @@ services:
       WORDPRESS_DEBUG: 1
     volumes:
       - wordpress_data:/var/www/html
+      - ./wp-config.php:/var/www/html/wp-config.php
       - ./wp-hoptown-rental:/var/www/html/wp-content/plugins/wp-hoptown-rental
     ports:
       - "8080:80"

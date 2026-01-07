@@ -288,7 +288,27 @@
 		},
 
 		formatPrice: function(price) {
-			return parseFloat(price).toFixed(2) + ' €';
+			var format = (hoptownRental.i18n && hoptownRental.i18n.priceFormat) || {
+				decimal: '.',
+				thousands: ',',
+				currency: '€',
+				position: 'after',
+				space: true
+			};
+
+			var amount = parseFloat(price || 0);
+			var parts = amount.toFixed(2).split('.');
+			var integer = parts[0];
+			var fraction = parts[1];
+			var withThousands = integer.replace(/\B(?=(\d{3})+(?!\d))/g, format.thousands);
+			var formatted = withThousands + (fraction ? format.decimal + fraction : '');
+			var space = format.space ? ' ' : '';
+
+			if (format.position === 'before') {
+				return format.currency + space + formatted;
+			}
+
+			return formatted + space + format.currency;
 		}
 	};
 

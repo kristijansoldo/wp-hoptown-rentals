@@ -66,7 +66,7 @@ class Hoptown_Rental_Booking_API {
 		if ( ! get_post( $inflatable_id ) || Hoptown_Rental_Inflatable_Post_Type::POST_TYPE !== get_post_type( $inflatable_id ) ) {
 			return new WP_REST_Response(
 				array(
-					'error' => __( 'Inflatable not found', 'hoptown-rental' ),
+					'error' => __( 'Inflatable not found', HOPTOWN_RENTAL_TEXTDOMAIN ),
 				),
 				404
 			);
@@ -98,7 +98,7 @@ class Hoptown_Rental_Booking_API {
 		if ( ! get_post( $inflatable_id ) || Hoptown_Rental_Inflatable_Post_Type::POST_TYPE !== get_post_type( $inflatable_id ) ) {
 			return new WP_REST_Response(
 				array(
-					'error' => __( 'Inflatable not found', 'hoptown-rental' ),
+					'error' => __( 'Inflatable not found', HOPTOWN_RENTAL_TEXTDOMAIN ),
 				),
 				404
 			);
@@ -110,7 +110,7 @@ class Hoptown_Rental_Booking_API {
 		if ( ! $is_available ) {
 			return new WP_REST_Response(
 				array(
-					'error'     => __( 'Date not available', 'hoptown-rental' ),
+					'error'     => __( 'Date not available', HOPTOWN_RENTAL_TEXTDOMAIN ),
 					'available' => false,
 				),
 				200
@@ -119,7 +119,7 @@ class Hoptown_Rental_Booking_API {
 
 		// Get pricing
 		$rental_price   = Hoptown_Rental_Inflatable_Post_Type::get_price_for_date( $inflatable_id, $date );
-		$delivery_price = get_post_meta( $inflatable_id, '_hoptown_delivery_price', true );
+		$delivery_price = Hoptown_Rental_Inflatable::from_id( $inflatable_id )->delivery_price;
 
 		return new WP_REST_Response(
 			array(

@@ -35,15 +35,15 @@ for ( $weekday = 0; $weekday < 7; $weekday++ ) {
 	<div class="hoptown-calendar-legend">
 		<div class="hoptown-legend-item">
 			<span class="hoptown-legend-color hoptown-legend-available"></span>
-			<span><?php esc_html_e( 'Available', 'hoptown-rental' ); ?></span>
+			<span><?php esc_html_e( 'Available', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></span>
 		</div>
 		<div class="hoptown-legend-item">
 			<span class="hoptown-legend-color hoptown-legend-booked"></span>
-			<span><?php esc_html_e( 'Booked', 'hoptown-rental' ); ?></span>
+			<span><?php esc_html_e( 'Booked', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></span>
 		</div>
 		<div class="hoptown-legend-item">
 			<span class="hoptown-legend-color hoptown-legend-selected"></span>
-			<span><?php esc_html_e( 'Selected', 'hoptown-rental' ); ?></span>
+			<span><?php esc_html_e( 'Selected', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></span>
 		</div>
 	</div>
 </div>

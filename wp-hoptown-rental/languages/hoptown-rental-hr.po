@@ -18,6 +18,9 @@ msgstr "Napuhanci"
 msgid "Inflatable"
 msgstr "Napuhanac"
 
+msgid "Select Inflatable"
+msgstr "Odaberi napuhanac"
+
 msgid "Inflatable Archives"
 msgstr "Arhiva napuhanaca"
 
@@ -168,6 +171,9 @@ msgstr "Adresa dostave"
 msgid "Pickup Time"
 msgstr "Vrijeme preuzimanja"
 
+msgid "Pickup Time (24h)"
+msgstr "Vrijeme preuzimanja (24h)"
+
 msgid "Name"
 msgstr "Ime"
 
@@ -285,6 +291,9 @@ msgstr "Unesite ID napuhanca."
 msgid "Inflatable not found"
 msgstr "Napuhanac nije pronađen"
 
+msgid "Inflatable is not available on this date"
+msgstr "Napuhanac nije dostupan na ovaj datum"
+
 msgid "Date not available"
 msgstr "Datum nije dostupan"
 
@@ -303,6 +312,9 @@ msgstr "Unesite adresu dostave"
 msgid "Please select pickup time"
 msgstr "Odaberite vrijeme preuzimanja"
 
+msgid "Pickup time must be in HH:MM format"
+msgstr "Vrijeme preuzimanja mora biti u formatu HH:MM"
+
 msgid "Booking submitted successfully!"
 msgstr "Rezervacija je uspješno poslana!"
 
@@ -317,3 +329,57 @@ msgstr "Došlo je do greške. Pokušajte ponovno."
 
 msgid "Submitting..."
 msgstr "Slanje..."
+
+msgid "Hoptown Settings"
+msgstr "Hoptown postavke"
+
+msgid "Settings"
+msgstr "Postavke"
+
+msgid "Notifications"
+msgstr "Obavijesti"
+
+msgid "Notification Email"
+msgstr "Email za obavijesti"
+
+msgid "Address that receives booking notifications."
+msgstr "Adresa koja prima obavijesti o rezervacijama."
+
+msgid "New booking: %1$s (%2$s)"
+msgstr "Nova rezervacija: %1$s (%2$s)"
+
+msgid "Inflatable: %s"
+msgstr "Napuhanac: %s"
+
+msgid "Date: %s"
+msgstr "Datum: %s"
+
+msgid "Name: %s"
+msgstr "Ime: %s"
+
+msgid "Email: %s"
+msgstr "Email: %s"
+
+msgid "Phone: %s"
+msgstr "Telefon: %s"
+
+msgid "Delivery Method: %s"
+msgstr "Način dostave: %s"
+
+msgid "Delivery Address: %s"
+msgstr "Adresa dostave: %s"
+
+msgid "Pickup Time: %s"
+msgstr "Vrijeme preuzimanja: %s"
+
+msgid "Note: %s"
+msgstr "Napomena: %s"
+
+msgid "Rental Price: %s"
+msgstr "Cijena najma: %s"
+
+msgid "Delivery Price: %s"
+msgstr "Cijena dostave: %s"
+
+msgid "Total: %s"
+msgstr "Ukupno: %s"

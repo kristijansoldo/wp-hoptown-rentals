@@ -14,7 +14,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 	public function add_meta_boxes() {
 		add_meta_box(
 			'hoptown_pricing',
-			__( 'Pricing', 'hoptown-rental' ),
+			__( 'Pricing', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_pricing_meta_box' ),
 			Hoptown_Rental_Inflatable_Post_Type::POST_TYPE,
 			'normal',
@@ -23,7 +23,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 
 		add_meta_box(
 			'hoptown_delivery',
-			__( 'Delivery Options', 'hoptown-rental' ),
+			__( 'Delivery Options', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_delivery_meta_box' ),
 			Hoptown_Rental_Inflatable_Post_Type::POST_TYPE,
 			'normal',
@@ -32,7 +32,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 
 		add_meta_box(
 			'hoptown_gallery',
-			__( 'Gallery', 'hoptown-rental' ),
+			__( 'Gallery', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_gallery_meta_box' ),
 			Hoptown_Rental_Inflatable_Post_Type::POST_TYPE,
 			'side',
@@ -48,46 +48,46 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 	public function render_pricing_meta_box( $post ) {
 		wp_nonce_field( 'hoptown_pricing_meta_box', 'hoptown_pricing_nonce' );
 
-		$base_price      = get_post_meta( $post->ID, '_hoptown_base_price', true );
-		$use_day_pricing = get_post_meta( $post->ID, '_hoptown_use_day_pricing', true );
-		$weekday_price   = get_post_meta( $post->ID, '_hoptown_weekday_price', true );
-		$weekend_price   = get_post_meta( $post->ID, '_hoptown_weekend_price', true );
+		$base_price      = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_BASE_PRICE );
+		$use_day_pricing = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_USE_DAY_PRICING );
+		$weekday_price   = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_WEEKDAY_PRICE );
+		$weekend_price   = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_WEEKEND_PRICE );
 		?>
 		<table class="form-table">
 			<tr>
 				<th scope="row">
-					<label for="hoptown_base_price"><?php esc_html_e( 'Base Price (€)', 'hoptown-rental' ); ?></label>
+					<label for="hoptown_base_price"><?php esc_html_e( 'Base Price (€)', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></label>
 				</th>
 				<td>
 					<input type="number" step="0.01" id="hoptown_base_price" name="hoptown_base_price" value="<?php echo esc_attr( $base_price ); ?>" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Default rental price per day', 'hoptown-rental' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Default rental price per day', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
 				<th scope="row">
-					<label for="hoptown_use_day_pricing"><?php esc_html_e( 'Use Day-Specific Pricing', 'hoptown-rental' ); ?></label>
+					<label for="hoptown_use_day_pricing"><?php esc_html_e( 'Use Day-Specific Pricing', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></label>
 				</th>
 				<td>
 					<input type="checkbox" id="hoptown_use_day_pricing" name="hoptown_use_day_pricing" value="yes" <?php checked( $use_day_pricing, 'yes' ); ?> />
-					<p class="description"><?php esc_html_e( 'Enable different prices for weekdays and weekends', 'hoptown-rental' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Enable different prices for weekdays and weekends', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr class="hoptown-day-pricing" style="<?php echo ( 'yes' !== $use_day_pricing ) ? 'display:none;' : ''; ?>">
 				<th scope="row">
-					<label for="hoptown_weekday_price"><?php esc_html_e( 'Weekday Price (€)', 'hoptown-rental' ); ?></label>
+					<label for="hoptown_weekday_price"><?php esc_html_e( 'Weekday Price (€)', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></label>
 				</th>
 				<td>
 					<input type="number" step="0.01" id="hoptown_weekday_price" name="hoptown_weekday_price" value="<?php echo esc_attr( $weekday_price ); ?>" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Price for Monday-Friday', 'hoptown-rental' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Price for Monday-Friday', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr class="hoptown-day-pricing" style="<?php echo ( 'yes' !== $use_day_pricing ) ? 'display:none;' : ''; ?>">
 				<th scope="row">
-					<label for="hoptown_weekend_price"><?php esc_html_e( 'Weekend Price (€)', 'hoptown-rental' ); ?></label>
+					<label for="hoptown_weekend_price"><?php esc_html_e( 'Weekend Price (€)', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></label>
 				</th>
 				<td>
 					<input type="number" step="0.01" id="hoptown_weekend_price" name="hoptown_weekend_price" value="<?php echo esc_attr( $weekend_price ); ?>" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Price for Saturday-Sunday', 'hoptown-rental' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Price for Saturday-Sunday', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -114,16 +114,16 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 	public function render_delivery_meta_box( $post ) {
 		wp_nonce_field( 'hoptown_delivery_meta_box', 'hoptown_delivery_nonce' );
 
-		$delivery_price = get_post_meta( $post->ID, '_hoptown_delivery_price', true );
+		$delivery_price = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_DELIVERY_PRICE );
 		?>
 		<table class="form-table">
 			<tr>
 				<th scope="row">
-					<label for="hoptown_delivery_price"><?php esc_html_e( 'Delivery Price (€)', 'hoptown-rental' ); ?></label>
+					<label for="hoptown_delivery_price"><?php esc_html_e( 'Delivery Price (€)', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></label>
 				</th>
 				<td>
 					<input type="number" step="0.01" id="hoptown_delivery_price" name="hoptown_delivery_price" value="<?php echo esc_attr( $delivery_price ); ?>" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Additional charge for delivery', 'hoptown-rental' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Additional charge for delivery', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -138,7 +138,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 	public function render_gallery_meta_box( $post ) {
 		wp_nonce_field( 'hoptown_gallery_meta_box', 'hoptown_gallery_nonce' );
 
-		$gallery_ids = get_post_meta( $post->ID, '_hoptown_gallery', true );
+		$gallery_ids = Hoptown_Rental_Meta::get( $post->ID, Hoptown_Rental_Meta::INFLATABLE_GALLERY );
 		$gallery_ids = ! empty( $gallery_ids ) ? explode( ',', $gallery_ids ) : array();
 		?>
 		<div class="hoptown-gallery-container">
@@ -160,7 +160,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 				?>
 			</ul>
 			<input type="hidden" id="hoptown_gallery" name="hoptown_gallery" value="<?php echo esc_attr( implode( ',', $gallery_ids ) ); ?>" />
-			<button type="button" class="button hoptown-add-gallery-images"><?php esc_html_e( 'Add Images', 'hoptown-rental' ); ?></button>
+			<button type="button" class="button hoptown-add-gallery-images"><?php esc_html_e( 'Add Images', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></button>
 		</div>
 
 		<style>
@@ -211,9 +211,9 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 				}
 
 				frame = wp.media({
-					title: '<?php esc_html_e( 'Select Gallery Images', 'hoptown-rental' ); ?>',
+					title: '<?php esc_html_e( 'Select Gallery Images', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>',
 					button: {
-						text: '<?php esc_html_e( 'Add to Gallery', 'hoptown-rental' ); ?>'
+						text: '<?php esc_html_e( 'Add to Gallery', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>'
 					},
 					multiple: true
 				});
@@ -280,37 +280,17 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 
 		// Save pricing fields
 		if ( isset( $_POST['hoptown_pricing_nonce'] ) && wp_verify_nonce( $_POST['hoptown_pricing_nonce'], 'hoptown_pricing_meta_box' ) ) {
-			if ( isset( $_POST['hoptown_base_price'] ) ) {
-				update_post_meta( $post_id, '_hoptown_base_price', sanitize_text_field( $_POST['hoptown_base_price'] ) );
-			}
-
-			if ( isset( $_POST['hoptown_use_day_pricing'] ) ) {
-				update_post_meta( $post_id, '_hoptown_use_day_pricing', 'yes' );
-			} else {
-				update_post_meta( $post_id, '_hoptown_use_day_pricing', 'no' );
-			}
-
-			if ( isset( $_POST['hoptown_weekday_price'] ) ) {
-				update_post_meta( $post_id, '_hoptown_weekday_price', sanitize_text_field( $_POST['hoptown_weekday_price'] ) );
-			}
-
-			if ( isset( $_POST['hoptown_weekend_price'] ) ) {
-				update_post_meta( $post_id, '_hoptown_weekend_price', sanitize_text_field( $_POST['hoptown_weekend_price'] ) );
-			}
+			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
 		}
 
 		// Save delivery fields
 		if ( isset( $_POST['hoptown_delivery_nonce'] ) && wp_verify_nonce( $_POST['hoptown_delivery_nonce'], 'hoptown_delivery_meta_box' ) ) {
-			if ( isset( $_POST['hoptown_delivery_price'] ) ) {
-				update_post_meta( $post_id, '_hoptown_delivery_price', sanitize_text_field( $_POST['hoptown_delivery_price'] ) );
-			}
+			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
 		}
 
 		// Save gallery
 		if ( isset( $_POST['hoptown_gallery_nonce'] ) && wp_verify_nonce( $_POST['hoptown_gallery_nonce'], 'hoptown_gallery_meta_box' ) ) {
-			if ( isset( $_POST['hoptown_gallery'] ) ) {
-				update_post_meta( $post_id, '_hoptown_gallery', sanitize_text_field( $_POST['hoptown_gallery'] ) );
-			}
+			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
 		}
 	}
 }

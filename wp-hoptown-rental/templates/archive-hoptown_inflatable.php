@@ -18,8 +18,9 @@ get_header();
 			<?php
 			while ( have_posts() ) :
 				the_post();
-				$base_price    = get_post_meta( get_the_ID(), "_hoptown_base_price", true );
-				$gallery_ids   = get_post_meta( get_the_ID(), "_hoptown_gallery", true );
+				$inflatable    = Hoptown_Rental_Inflatable::from_id( get_the_ID() );
+				$base_price    = $inflatable->base_price;
+				$gallery_ids   = $inflatable->gallery_ids ? implode( ',', $inflatable->gallery_ids ) : '';
 				$gallery_image = "";
 
 				if ( ! empty( $gallery_ids ) ) {
@@ -46,7 +47,7 @@ get_header();
 
 					<?php if ( $base_price !== "" ) : ?>
 						<p class="hoptown-inflatable-price">
-							<?php echo esc_html( number_format( (float) $base_price, 2 ) ); ?> €
+							<?php echo esc_html( ( new Hoptown_Rental_Money( $base_price ) )->format() ); ?>
 						</p>
 					<?php endif; ?>
 				</article>
@@ -55,7 +56,7 @@ get_header();
 
 		<?php the_posts_navigation(); ?>
 	<?php else : ?>
-		<p><?php esc_html_e( "No inflatables found.", "hoptown-rental" ); ?></p>
+		<p><?php esc_html_e( "No inflatables found.", HOPTOWN_RENTAL_TEXTDOMAIN ); ?></p>
 	<?php endif; ?>
 </main>
 <?php

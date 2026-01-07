@@ -9,8 +9,9 @@ get_header();
 
 while ( have_posts() ) :
 	the_post();
-	$base_price  = get_post_meta( get_the_ID(), "_hoptown_base_price", true );
-	$gallery_ids = get_post_meta( get_the_ID(), "_hoptown_gallery", true );
+	$inflatable  = Hoptown_Rental_Inflatable::from_id( get_the_ID() );
+	$base_price  = $inflatable->base_price;
+	$gallery_ids = $inflatable->gallery_ids ? implode( ',', $inflatable->gallery_ids ) : '';
 	?>
 	<main id="primary" class="site-main hoptown-inflatable-single">
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -24,7 +25,7 @@ while ( have_posts() ) :
 
 			<?php if ( $base_price !== "" ) : ?>
 				<p class="hoptown-inflatable-price">
-					<?php echo esc_html( number_format( (float) $base_price, 2 ) ); ?> €
+					<?php echo esc_html( ( new Hoptown_Rental_Money( $base_price ) )->format() ); ?>
 				</p>
 			<?php endif; ?>
 
@@ -35,7 +36,7 @@ while ( have_posts() ) :
 			<?php if ( $gallery_ids ) : ?>
 				<?php $gallery_list = explode( ",", $gallery_ids ); ?>
 				<div class="inflatable-gallery">
-					<h3><?php esc_html_e( "Gallery", "hoptown-rental" ); ?></h3>
+					<h3><?php esc_html_e( "Gallery", HOPTOWN_RENTAL_TEXTDOMAIN ); ?></h3>
 					<div class="gallery-grid">
 						<?php foreach ( $gallery_list as $image_id ) : ?>
 							<?php $image_url = wp_get_attachment_image_url( $image_id, "medium" ); ?>
@@ -48,7 +49,7 @@ while ( have_posts() ) :
 			<?php endif; ?>
 
 			<div class="booking-section">
-				<h2><?php esc_html_e( "Book This Inflatable", "hoptown-rental" ); ?></h2>
+				<h2><?php esc_html_e( "Book This Inflatable", HOPTOWN_RENTAL_TEXTDOMAIN ); ?></h2>
 				<?php echo do_shortcode( '[hoptown_booking_calendar inflatable_id="' . get_the_ID() . '"]' ); ?>
 				<?php echo do_shortcode( '[hoptown_booking_form inflatable_id="' . get_the_ID() . '"]' ); ?>
 			</div>

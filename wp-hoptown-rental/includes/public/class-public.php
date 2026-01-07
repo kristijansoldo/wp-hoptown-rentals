@@ -80,12 +80,19 @@ class Hoptown_Rental_Public {
 				'i18n'      => array(
 					'monthNames'       => $month_names,
 					'weekdayNames'     => $weekday_names,
-					'dateNotAvailable' => __( 'This date is not available.', 'hoptown-rental' ),
-					'pricingError'     => __( 'Error fetching pricing information.', 'hoptown-rental' ),
-					'submitError'      => __( 'An error occurred. Please try again.', 'hoptown-rental' ),
-					'submitting'       => __( 'Submitting...', 'hoptown-rental' ),
-					'reserve'          => __( 'Reserve', 'hoptown-rental' ),
-					'selectDate'       => __( 'Please select a date from the calendar', 'hoptown-rental' ),
+					'dateNotAvailable' => __( 'This date is not available.', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'pricingError'     => __( 'Error fetching pricing information.', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'submitError'      => __( 'An error occurred. Please try again.', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'submitting'       => __( 'Submitting...', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'reserve'          => __( 'Reserve', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'selectDate'       => __( 'Please select a date from the calendar', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'priceFormat'      => array(
+						'decimal'   => get_option( 'decimal_separator', '.' ),
+						'thousands' => get_option( 'thousands_separator', ',' ),
+						'currency'  => '€',
+						'position'  => 'after',
+						'space'     => true,
+					),
 				),
 			)
 		);
@@ -109,7 +116,7 @@ class Hoptown_Rental_Public {
 		$inflatable_id = intval( $atts['inflatable_id'] );
 
 		if ( ! $inflatable_id ) {
-			return '<p>' . esc_html__( 'Please provide an inflatable ID.', 'hoptown-rental' ) . '</p>';
+			return '<p>' . esc_html__( 'Please provide an inflatable ID.', HOPTOWN_RENTAL_TEXTDOMAIN ) . '</p>';
 		}
 
 		// Get booked dates
@@ -138,13 +145,14 @@ class Hoptown_Rental_Public {
 		$inflatable_id = intval( $atts['inflatable_id'] );
 
 		if ( ! $inflatable_id ) {
-			return '<p>' . esc_html__( 'Please provide an inflatable ID.', 'hoptown-rental' ) . '</p>';
+			return '<p>' . esc_html__( 'Please provide an inflatable ID.', HOPTOWN_RENTAL_TEXTDOMAIN ) . '</p>';
 		}
 
 		// Get inflatable details
 		$inflatable     = get_post( $inflatable_id );
-		$base_price     = get_post_meta( $inflatable_id, '_hoptown_base_price', true );
-		$delivery_price = get_post_meta( $inflatable_id, '_hoptown_delivery_price', true );
+		$inflatable_obj = Hoptown_Rental_Inflatable::from_id( $inflatable_id );
+		$base_price     = $inflatable_obj->base_price;
+		$delivery_price = $inflatable_obj->delivery_price;
 
 		ob_start();
 		include HOPTOWN_RENTAL_PLUGIN_DIR . 'templates/booking-form.php';

@@ -14,7 +14,7 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 	public function add_meta_boxes() {
 		add_meta_box(
 			'hoptown_booking_details',
-			__( 'Booking Details', 'hoptown-rental' ),
+			__( 'Booking Details', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_booking_details_meta_box' ),
 			Hoptown_Rental_Booking_Post_Type::POST_TYPE,
 			'normal',
@@ -23,7 +23,7 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 
 		add_meta_box(
 			'hoptown_customer_details',
-			__( 'Customer Details', 'hoptown-rental' ),
+			__( 'Customer Details', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_customer_details_meta_box' ),
 			Hoptown_Rental_Booking_Post_Type::POST_TYPE,
 			'normal',
@@ -32,7 +32,7 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 
 		add_meta_box(
 			'hoptown_pricing_details',
-			__( 'Pricing Details', 'hoptown-rental' ),
+			__( 'Pricing Details', HOPTOWN_RENTAL_TEXTDOMAIN ),
 			array( $this, 'render_pricing_details_meta_box' ),
 			Hoptown_Rental_Booking_Post_Type::POST_TYPE,
 			'side',
@@ -46,52 +46,70 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 	 * @param WP_Post $post Current post object.
 	 */
 	public function render_booking_details_meta_box( $post ) {
-		$inflatable_id   = get_post_meta( $post->ID, '_hoptown_inflatable_id', true );
-		$booking_date    = get_post_meta( $post->ID, '_hoptown_booking_date', true );
-		$delivery_method = get_post_meta( $post->ID, '_hoptown_delivery_method', true );
-		$pickup_time     = get_post_meta( $post->ID, '_hoptown_pickup_time', true );
-		$delivery_address = get_post_meta( $post->ID, '_hoptown_delivery_address', true );
+		wp_nonce_field( 'hoptown_booking_meta', 'hoptown_booking_meta_nonce' );
 
-		$inflatable_title = $inflatable_id ? get_the_title( $inflatable_id ) : __( 'N/A', 'hoptown-rental' );
+		$booking          = Hoptown_Rental_Booking::from_id( $post->ID );
+		$inflatable_id    = $booking->inflatable_id;
+		$booking_date     = $booking->booking_date;
+		$delivery_method  = $booking->delivery_method;
+		$pickup_time      = $booking->pickup_time;
+		$delivery_address = $booking->delivery_address;
+
+		$inflatable_title = $inflatable_id ? get_the_title( $inflatable_id ) : __( 'N/A', HOPTOWN_RENTAL_TEXTDOMAIN );
+		$inflatables      = get_posts(
+			array(
+				'post_type'      => Hoptown_Rental_Inflatable_Post_Type::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => 200,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
 		?>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Inflatable', 'hoptown-rental' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Inflatable', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
 				<td>
-					<strong><?php echo esc_html( $inflatable_title ); ?></strong>
+					<select name="hoptown_inflatable_id" class="regular-text">
+						<option value=""><?php esc_html_e( 'Select Inflatable', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></option>
+						<?php foreach ( $inflatables as $inflatable ) : ?>
+							<option value="<?php echo esc_attr( $inflatable->ID ); ?>" <?php selected( (int) $inflatable_id, (int) $inflatable->ID ); ?>>
+								<?php echo esc_html( $inflatable->post_title ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
 					<?php if ( $inflatable_id ) : ?>
-						<br><a href="<?php echo esc_url( get_edit_post_link( $inflatable_id ) ); ?>" target="_blank"><?php esc_html_e( 'Edit Inflatable', 'hoptown-rental' ); ?></a>
+						<p><a href="<?php echo esc_url( get_edit_post_link( $inflatable_id ) ); ?>" target="_blank"><?php esc_html_e( 'Edit Inflatable', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></a></p>
 					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Booking Date', 'hoptown-rental' ); ?></th>
-				<td><strong><?php echo esc_html( date( 'd.m.Y', strtotime( $booking_date ) ) ); ?></strong></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Delivery Method', 'hoptown-rental' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Booking Date', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
 				<td>
-					<?php
-					if ( 'delivery' === $delivery_method ) {
-						esc_html_e( 'Delivery', 'hoptown-rental' );
-					} else {
-						esc_html_e( 'Pickup', 'hoptown-rental' );
-					}
-					?>
+					<input type="date" name="hoptown_booking_date" value="<?php echo esc_attr( $booking_date ); ?>" />
 				</td>
 			</tr>
-			<?php if ( 'delivery' === $delivery_method && $delivery_address ) : ?>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Delivery Address', 'hoptown-rental' ); ?></th>
-				<td><?php echo nl2br( esc_html( $delivery_address ) ); ?></td>
+				<th scope="row"><?php esc_html_e( 'Delivery Method', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td>
+					<label>
+						<input type="radio" name="hoptown_delivery_method" value="delivery" <?php checked( $delivery_method, 'delivery' ); ?> />
+						<?php esc_html_e( 'Delivery', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>
+					</label>
+					<label style="margin-left: 12px;">
+						<input type="radio" name="hoptown_delivery_method" value="pickup" <?php checked( $delivery_method, 'pickup' ); ?> />
+						<?php esc_html_e( 'Pickup', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>
+					</label>
+				</td>
 			</tr>
-			<?php endif; ?>
-			<?php if ( 'pickup' === $delivery_method && $pickup_time ) : ?>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Pickup Time', 'hoptown-rental' ); ?></th>
-				<td><?php echo esc_html( $pickup_time ); ?></td>
+				<th scope="row"><?php esc_html_e( 'Delivery Address', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><input type="text" name="hoptown_delivery_address" class="regular-text" value="<?php echo esc_attr( $delivery_address ); ?>" /></td>
 			</tr>
-			<?php endif; ?>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Pickup Time (24h)', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><input type="text" name="hoptown_pickup_time" value="<?php echo esc_attr( $pickup_time ); ?>" placeholder="HH:MM" /></td>
+			</tr>
 		</table>
 		<?php
 	}
@@ -102,30 +120,29 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 	 * @param WP_Post $post Current post object.
 	 */
 	public function render_customer_details_meta_box( $post ) {
-		$customer_name  = get_post_meta( $post->ID, '_hoptown_customer_name', true );
-		$customer_email = get_post_meta( $post->ID, '_hoptown_customer_email', true );
-		$customer_phone = get_post_meta( $post->ID, '_hoptown_customer_phone', true );
-		$customer_note  = get_post_meta( $post->ID, '_hoptown_customer_note', true );
+		$booking        = Hoptown_Rental_Booking::from_id( $post->ID );
+		$customer_name  = $booking->customer_name;
+		$customer_email = $booking->customer_email;
+		$customer_phone = $booking->customer_phone;
+		$customer_note  = $booking->customer_note;
 		?>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Name', 'hoptown-rental' ); ?></th>
-				<td><?php echo esc_html( $customer_name ); ?></td>
+				<th scope="row"><?php esc_html_e( 'Name', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><input type="text" name="hoptown_customer_name" class="regular-text" value="<?php echo esc_attr( $customer_name ); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Email', 'hoptown-rental' ); ?></th>
-				<td><a href="mailto:<?php echo esc_attr( $customer_email ); ?>"><?php echo esc_html( $customer_email ); ?></a></td>
+				<th scope="row"><?php esc_html_e( 'Email', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><input type="email" name="hoptown_customer_email" class="regular-text" value="<?php echo esc_attr( $customer_email ); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Phone', 'hoptown-rental' ); ?></th>
-				<td><a href="tel:<?php echo esc_attr( $customer_phone ); ?>"><?php echo esc_html( $customer_phone ); ?></a></td>
+				<th scope="row"><?php esc_html_e( 'Phone', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><input type="text" name="hoptown_customer_phone" class="regular-text" value="<?php echo esc_attr( $customer_phone ); ?>" /></td>
 			</tr>
-			<?php if ( $customer_note ) : ?>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Note', 'hoptown-rental' ); ?></th>
-				<td><?php echo nl2br( esc_html( $customer_note ) ); ?></td>
+				<th scope="row"><?php esc_html_e( 'Note', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><textarea name="hoptown_customer_note" rows="3" class="regular-text"><?php echo esc_textarea( $customer_note ); ?></textarea></td>
 			</tr>
-			<?php endif; ?>
 		</table>
 		<?php
 	}
@@ -136,22 +153,23 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 	 * @param WP_Post $post Current post object.
 	 */
 	public function render_pricing_details_meta_box( $post ) {
-		$rental_price   = get_post_meta( $post->ID, '_hoptown_rental_price', true );
-		$delivery_price = get_post_meta( $post->ID, '_hoptown_delivery_price', true );
-		$total_price    = get_post_meta( $post->ID, '_hoptown_total_price', true );
+		$booking        = Hoptown_Rental_Booking::from_id( $post->ID );
+		$rental_price   = $booking->rental_price;
+		$delivery_price = $booking->delivery_price;
+		$total_price    = $booking->total_price;
 		?>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Rental Price', 'hoptown-rental' ); ?></th>
-				<td><?php echo esc_html( number_format( floatval( $rental_price ), 2 ) ); ?> €</td>
+				<th scope="row"><?php esc_html_e( 'Rental Price', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><?php echo esc_html( ( new Hoptown_Rental_Money( $rental_price ) )->format() ); ?></td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Delivery Price', 'hoptown-rental' ); ?></th>
-				<td><?php echo esc_html( number_format( floatval( $delivery_price ), 2 ) ); ?> €</td>
+				<th scope="row"><?php esc_html_e( 'Delivery Price', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></th>
+				<td><?php echo esc_html( ( new Hoptown_Rental_Money( $delivery_price ) )->format() ); ?></td>
 			</tr>
 			<tr>
-				<th scope="row"><strong><?php esc_html_e( 'Total', 'hoptown-rental' ); ?></strong></th>
-				<td><strong><?php echo esc_html( number_format( floatval( $total_price ), 2 ) ); ?> €</strong></td>
+				<th scope="row"><strong><?php esc_html_e( 'Total', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></strong></th>
+				<td><strong><?php echo esc_html( ( new Hoptown_Rental_Money( $total_price ) )->format() ); ?></strong></td>
 			</tr>
 		</table>
 		<?php
@@ -164,7 +182,26 @@ class Hoptown_Rental_Booking_Meta_Boxes {
 	 * @param WP_Post $post    Post object.
 	 */
 	public function save_meta_boxes( $post_id, $post ) {
-		// Bookings are typically created programmatically
-		// This method is here for completeness but may not be used
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['hoptown_booking_meta_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['hoptown_booking_meta_nonce'] ) || ! wp_verify_nonce( $_POST['hoptown_booking_meta_nonce'], 'hoptown_booking_meta' ) ) {
+			return;
+		}
+
+		if ( Hoptown_Rental_Booking_Post_Type::POST_TYPE !== $post->post_type ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		Hoptown_Rental_Booking_Service::save_from_admin( $post_id, $_POST );
 	}
 }
