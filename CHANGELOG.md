@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.2...v1.1.3) (2026-01-08)
+
+### Bug Fixes
+
+* fixed day price ([44a38e9](https://github.com/kristijansoldo/wp-hoptown-rentals/commit/44a38e927c7c44c900d9da20863a15d662a4b02d))
+
 ## [1.1.2](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.1...v1.1.2) (2026-01-08)
 
 ### Bug Fixes
