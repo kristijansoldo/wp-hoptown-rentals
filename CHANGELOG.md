@@ -1,3 +1,9 @@
+## [1.1.4](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.3...v1.1.4) (2026-01-08)
+
+### Bug Fixes
+
+* zip release fix ([8b03917](https://github.com/kristijansoldo/wp-hoptown-rentals/commit/8b03917fee8d885739b524398b6e43c9138e53d9))
+
 ## [1.1.3](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.2...v1.1.3) (2026-01-08)
 
 ### Bug Fixes
