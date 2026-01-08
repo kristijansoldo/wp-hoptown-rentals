@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.0...v1.1.1) (2026-01-07)
+
+### Bug Fixes
+
+* force template ([afa35db](https://github.com/kristijansoldo/wp-hoptown-rentals/commit/afa35db272fb26cb78a07004ce307e65f12c26ab))
+
 ## [1.1.0](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.0.1...v1.1.0) (2026-01-07)
 
 ### Features
