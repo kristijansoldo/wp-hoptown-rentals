@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.1...v1.1.2) (2026-01-08)
+
+### Bug Fixes
+
+* fixed gallery, added prices in calendar ([e7e64ff](https://github.com/kristijansoldo/wp-hoptown-rentals/commit/e7e64ffdd658cf1164a9ac140758bb9acbb1099a))
+
 ## [1.1.1](https://github.com/kristijansoldo/wp-hoptown-rentals/compare/v1.1.0...v1.1.1) (2026-01-07)
 
 ### Bug Fixes
