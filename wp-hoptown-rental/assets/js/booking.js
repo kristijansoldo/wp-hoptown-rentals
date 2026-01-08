@@ -15,6 +15,10 @@
 		inflatableId: null,
 		rentalPrice: 0,
 		deliveryPrice: 0,
+		basePrice: 0,
+		weekdayPrice: 0,
+		weekendPrice: 0,
+		useDayPricing: 'no',
 
 		init: function() {
 			this.initCalendar();
@@ -31,6 +35,10 @@
 
 			this.inflatableId = $calendar.data('inflatable-id');
 			this.bookedDates = $calendar.data('booked-dates') || [];
+			this.basePrice = parseFloat($calendar.attr('data-base-price')) || 0;
+			this.weekdayPrice = parseFloat($calendar.attr('data-weekday-price')) || 0;
+			this.weekendPrice = parseFloat($calendar.attr('data-weekend-price')) || 0;
+			this.useDayPricing = $calendar.attr('data-use-day-pricing') || 'no';
 
 			this.renderCalendar();
 
@@ -85,17 +93,25 @@
 
 			// Days
 			for (var day = 1; day <= daysInMonth; day++) {
-				var date = this.formatDate(new Date(this.currentYear, this.currentMonth, day));
-				var $day = $('<div class="hoptown-calendar-day" data-date="' + date + '">' + day + '</div>');
-
 				var dayDate = new Date(this.currentYear, this.currentMonth, day);
+				var date = this.formatDate(dayDate);
+				var isPast = dayDate < today;
+				var isBooked = this.bookedDates.indexOf(date) !== -1;
+				var dayPrice = this.getPriceForDate(dayDate);
+				var priceHtml = (!isPast && !isBooked) ? '<span class="hoptown-day-price">' + this.formatPrice(dayPrice) + '</span>' : '';
+				var $day = $(
+					'<div class="hoptown-calendar-day" data-date="' + date + '">' +
+						'<span class="hoptown-day-number">' + day + '</span>' +
+						priceHtml +
+					'</div>'
+				);
 
 				// Check if date is in the past
-				if (dayDate < today) {
+				if (isPast) {
 					$day.addClass('hoptown-day-past');
 				}
 				// Check if date is booked
-				else if (this.bookedDates.indexOf(date) !== -1) {
+				else if (isBooked) {
 					$day.addClass('hoptown-day-disabled');
 				}
 				// Check if date is selected
@@ -105,6 +121,22 @@
 
 				$days.append($day);
 			}
+		},
+		getPriceForDate: function(dateObj) {
+			var base = parseFloat(this.basePrice) || 0;
+
+			if (this.useDayPricing === 'yes') {
+				var day = dateObj.getDay();
+				var isWeekend = (day === 0 || day === 6);
+
+				if (isWeekend) {
+					return parseFloat(this.weekendPrice) || base;
+				}
+
+				return parseFloat(this.weekdayPrice) || base;
+			}
+
+			return base;
 		},
 
 		selectDate: function(date) {
@@ -301,7 +333,7 @@
 			var integer = parts[0];
 			var fraction = parts[1];
 			var withThousands = integer.replace(/\B(?=(\d{3})+(?!\d))/g, format.thousands);
-			var formatted = withThousands + (fraction ? format.decimal + fraction : '');
+			var formatted = (fraction === '00') ? withThousands : withThousands + format.decimal + fraction;
 			var space = format.space ? ' ' : '';
 
 			if (format.position === 'before') {
@@ -314,6 +346,27 @@
 
 	$(document).ready(function() {
 		HoptownBooking.init();
+
+		$(document).on('click', '.hoptown-gallery-link', function(e) {
+			e.preventDefault();
+			var src = $(this).attr('href');
+			var $lightbox = $('#hoptown-lightbox');
+
+			if ($lightbox.length === 0) {
+				$('body').append('<div id="hoptown-lightbox" class="hoptown-lightbox"><img alt="" /></div>');
+				$lightbox = $('#hoptown-lightbox');
+			}
+
+			$lightbox.find('img').attr('src', src);
+			$lightbox.addClass('is-open');
+		});
+
+		$(document).on('click', '#hoptown-lightbox', function(e) {
+			if ($(e.target).is('img')) {
+				return;
+			}
+			$(this).removeClass('is-open');
+		});
 	});
 
 })(jQuery);

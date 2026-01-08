@@ -77,6 +77,58 @@ class Hoptown_Rental_Inflatable_Post_Type {
 		);
 
 		register_post_type( self::POST_TYPE, $args );
+
+		add_action( 'rest_after_insert_' . self::POST_TYPE, array( $this, 'sync_rest_meta' ), 10, 3 );
+
+		register_post_meta(
+			self::POST_TYPE,
+			Hoptown_Rental_Meta::INFLATABLE_GALLERY,
+			array(
+				'type'              => 'string',
+				'single'            => true,
+				'show_in_rest'      => array(
+					'schema' => array(
+						'type'    => 'string',
+						'context' => array( 'view', 'edit' ),
+					),
+				),
+				'sanitize_callback' => 'sanitize_text_field',
+				'auth_callback'     => function( $allowed, $meta_key, $post_id ) {
+					return current_user_can( 'edit_post', $post_id );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Sync gallery meta from REST requests (Gutenberg saves).
+	 *
+	 * @param WP_Post         $post     Inserted or updated post.
+	 * @param WP_REST_Request $request  Request object.
+	 * @param bool            $creating True if creating a new post.
+	 */
+	public function sync_rest_meta( $post, $request, $creating ) {
+		if ( ! $post || ! $request instanceof WP_REST_Request ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+			return;
+		}
+
+		$meta = $request->get_param( 'meta' );
+		if ( ! is_array( $meta ) ) {
+			return;
+		}
+
+		if ( isset( $meta[ Hoptown_Rental_Meta::INFLATABLE_GALLERY ] ) ) {
+			Hoptown_Rental_Meta::update( $post->ID, Hoptown_Rental_Meta::INFLATABLE_GALLERY, $meta[ Hoptown_Rental_Meta::INFLATABLE_GALLERY ], 'sanitize_text_field' );
+			return;
+		}
+
+		if ( isset( $meta['hoptown_gallery'] ) ) {
+			Hoptown_Rental_Meta::update( $post->ID, Hoptown_Rental_Meta::INFLATABLE_GALLERY, $meta['hoptown_gallery'], 'sanitize_text_field' );
+		}
 	}
 
 	/**

@@ -18,7 +18,15 @@ for ( $weekday = 0; $weekday < 7; $weekday++ ) {
 }
 ?>
 
-<div class="hoptown-booking-calendar" data-inflatable-id="<?php echo esc_attr( $inflatable_id ); ?>" data-booked-dates="<?php echo esc_attr( wp_json_encode( $booked_dates ) ); ?>">
+<div
+	class="hoptown-booking-calendar"
+	data-inflatable-id="<?php echo esc_attr( $inflatable_id ); ?>"
+	data-booked-dates="<?php echo esc_attr( wp_json_encode( $booked_dates ) ); ?>"
+	data-use-day-pricing="<?php echo esc_attr( $inflatable->use_day_pricing ); ?>"
+	data-base-price="<?php echo esc_attr( $inflatable->base_price ); ?>"
+	data-weekday-price="<?php echo esc_attr( $inflatable->weekday_price ); ?>"
+	data-weekend-price="<?php echo esc_attr( $inflatable->weekend_price ); ?>"
+>
 	<div class="hoptown-calendar-header">
 		<button type="button" class="hoptown-calendar-prev">&laquo;</button>
 		<h3 class="hoptown-calendar-month"></h3>

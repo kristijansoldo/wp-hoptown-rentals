@@ -160,99 +160,9 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 				?>
 			</ul>
 			<input type="hidden" id="hoptown_gallery" name="hoptown_gallery" value="<?php echo esc_attr( implode( ',', $gallery_ids ) ); ?>" />
+			<input type="hidden" id="hoptown_gallery_dirty" name="hoptown_gallery_dirty" value="0" />
 			<button type="button" class="button hoptown-add-gallery-images"><?php esc_html_e( 'Add Images', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></button>
 		</div>
-
-		<style>
-		.hoptown-gallery-images {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-wrap: wrap;
-			gap: 10px;
-		}
-		.hoptown-gallery-images li {
-			position: relative;
-			display: inline-block;
-		}
-		.hoptown-gallery-images img {
-			width: 100px;
-			height: 100px;
-			object-fit: cover;
-			border: 1px solid #ddd;
-		}
-		.hoptown-remove-gallery-image {
-			position: absolute;
-			top: -5px;
-			right: -5px;
-			background: red;
-			color: white;
-			border-radius: 50%;
-			width: 20px;
-			height: 20px;
-			text-align: center;
-			line-height: 20px;
-			text-decoration: none;
-			font-weight: bold;
-		}
-		</style>
-
-		<script>
-		jQuery(document).ready(function($) {
-			var frame;
-
-			$('.hoptown-add-gallery-images').on('click', function(e) {
-				e.preventDefault();
-
-				if (frame) {
-					frame.open();
-					return;
-				}
-
-				frame = wp.media({
-					title: '<?php esc_html_e( 'Select Gallery Images', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>',
-					button: {
-						text: '<?php esc_html_e( 'Add to Gallery', HOPTOWN_RENTAL_TEXTDOMAIN ); ?>'
-					},
-					multiple: true
-				});
-
-				frame.on('select', function() {
-					var attachments = frame.state().get('selection').toJSON();
-					var galleryInput = $('#hoptown_gallery');
-					var currentIds = galleryInput.val() ? galleryInput.val().split(',') : [];
-					var galleryList = $('.hoptown-gallery-images');
-
-					$.each(attachments, function(index, attachment) {
-						if (currentIds.indexOf(String(attachment.id)) === -1) {
-							currentIds.push(attachment.id);
-							var thumbnail = attachment.sizes && attachment.sizes.thumbnail ? attachment.sizes.thumbnail.url : attachment.url;
-							galleryList.append('<li data-id="' + attachment.id + '"><img src="' + thumbnail + '" /><a href="#" class="hoptown-remove-gallery-image">&times;</a></li>');
-						}
-					});
-
-					galleryInput.val(currentIds.join(','));
-				});
-
-				frame.open();
-			});
-
-			$(document).on('click', '.hoptown-remove-gallery-image', function(e) {
-				e.preventDefault();
-				var $li = $(this).closest('li');
-				var imageId = $li.data('id');
-				var galleryInput = $('#hoptown_gallery');
-				var currentIds = galleryInput.val().split(',');
-				var newIds = currentIds.filter(function(id) {
-					return String(id) !== String(imageId);
-				});
-
-				galleryInput.val(newIds.join(','));
-				$li.remove();
-			});
-		});
-		</script>
 		<?php
 	}
 
@@ -264,7 +174,7 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 	 */
 	public function save_meta_boxes( $post_id, $post ) {
 		// Check if it's the correct post type
-		if ( Hoptown_Rental_Inflatable_Post_Type::POST_TYPE !== $post->post_type ) {
+		if ( ! $post || Hoptown_Rental_Inflatable_Post_Type::POST_TYPE !== $post->post_type ) {
 			return;
 		}
 
@@ -278,19 +188,25 @@ class Hoptown_Rental_Inflatable_Meta_Boxes {
 			return;
 		}
 
-		// Save pricing fields
-		if ( isset( $_POST['hoptown_pricing_nonce'] ) && wp_verify_nonce( $_POST['hoptown_pricing_nonce'], 'hoptown_pricing_meta_box' ) ) {
-			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
+		$data = wp_unslash( $_POST );
+
+		$has_valid_nonce =
+			( isset( $data['hoptown_pricing_nonce'] ) && wp_verify_nonce( $data['hoptown_pricing_nonce'], 'hoptown_pricing_meta_box' ) ) ||
+			( isset( $data['hoptown_delivery_nonce'] ) && wp_verify_nonce( $data['hoptown_delivery_nonce'], 'hoptown_delivery_meta_box' ) ) ||
+			( isset( $data['hoptown_gallery_nonce'] ) && wp_verify_nonce( $data['hoptown_gallery_nonce'], 'hoptown_gallery_meta_box' ) );
+
+		$has_fields =
+			isset( $data['hoptown_base_price'] ) ||
+			isset( $data['hoptown_use_day_pricing'] ) ||
+			isset( $data['hoptown_weekday_price'] ) ||
+			isset( $data['hoptown_weekend_price'] ) ||
+			isset( $data['hoptown_delivery_price'] ) ||
+			isset( $data['hoptown_gallery'] );
+
+		if ( ! $has_valid_nonce && ! $has_fields && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			return;
 		}
 
-		// Save delivery fields
-		if ( isset( $_POST['hoptown_delivery_nonce'] ) && wp_verify_nonce( $_POST['hoptown_delivery_nonce'], 'hoptown_delivery_meta_box' ) ) {
-			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
-		}
-
-		// Save gallery
-		if ( isset( $_POST['hoptown_gallery_nonce'] ) && wp_verify_nonce( $_POST['hoptown_gallery_nonce'], 'hoptown_gallery_meta_box' ) ) {
-			Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $_POST );
-		}
+		Hoptown_Rental_Inflatable_Service::save_from_admin( $post_id, $data );
 	}
 }

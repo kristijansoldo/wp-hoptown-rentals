@@ -93,6 +93,7 @@ class Hoptown_Rental {
 
 		add_action( "admin_enqueue_scripts", array( $plugin_admin, "enqueue_styles" ) );
 		add_action( "admin_enqueue_scripts", array( $plugin_admin, "enqueue_scripts" ) );
+		add_action( "enqueue_block_editor_assets", array( $plugin_admin, "enqueue_block_editor_assets" ) );
 		add_action( "admin_menu", array( $plugin_admin, "register_settings_menu" ) );
 		add_action( "admin_init", array( $plugin_admin, "register_settings" ) );
 
@@ -113,6 +114,7 @@ class Hoptown_Rental {
 
 		add_action( "wp_enqueue_scripts", array( $plugin_public, "enqueue_styles" ) );
 		add_action( "wp_enqueue_scripts", array( $plugin_public, "enqueue_scripts" ) );
+		add_filter( "the_content", array( $plugin_public, "append_booking_shortcodes" ), 12 );
 
 		$booking_handler = new Hoptown_Rental_Booking_Handler();
 		add_action( "wp_ajax_hoptown_submit_booking", array( $booking_handler, "handle_booking_submission" ) );

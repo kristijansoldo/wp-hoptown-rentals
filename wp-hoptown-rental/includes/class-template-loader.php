@@ -24,6 +24,10 @@ class Hoptown_Rental_Template_Loader {
 	 * @return string Template path.
 	 */
 	public function template_loader( $template ) {
+		if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+			return $template;
+		}
+
 		if ( is_singular( Hoptown_Rental_Inflatable_Post_Type::POST_TYPE ) ) {
 			return $this->get_template_hierarchy( "single-hoptown_inflatable.php", $template );
 		}

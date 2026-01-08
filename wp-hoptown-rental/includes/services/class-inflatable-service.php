@@ -36,7 +36,7 @@ class Hoptown_Rental_Inflatable_Service {
 			Hoptown_Rental_Meta::update( $post_id, Hoptown_Rental_Meta::INFLATABLE_DELIVERY_PRICE, $data['hoptown_delivery_price'], 'sanitize_text_field' );
 		}
 
-		if ( isset( $data['hoptown_gallery'] ) ) {
+		if ( isset( $data['hoptown_gallery_dirty'] ) && '1' === $data['hoptown_gallery_dirty'] ) {
 			Hoptown_Rental_Meta::update( $post_id, Hoptown_Rental_Meta::INFLATABLE_GALLERY, $data['hoptown_gallery'], 'sanitize_text_field' );
 		}
 	}

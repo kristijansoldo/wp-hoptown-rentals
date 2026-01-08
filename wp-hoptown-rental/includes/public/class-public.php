@@ -121,6 +121,7 @@ class Hoptown_Rental_Public {
 
 		// Get booked dates
 		$booked_dates = Hoptown_Rental_Booking_Post_Type::get_booked_dates( $inflatable_id );
+		$inflatable   = Hoptown_Rental_Inflatable::from_id( $inflatable_id );
 
 		ob_start();
 		include HOPTOWN_RENTAL_PLUGIN_DIR . 'templates/booking-calendar.php';
@@ -156,6 +157,78 @@ class Hoptown_Rental_Public {
 
 		ob_start();
 		include HOPTOWN_RENTAL_PLUGIN_DIR . 'templates/booking-form.php';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Append booking shortcodes to inflatable content if missing.
+	 *
+	 * @param string $content Post content.
+	 * @return string
+	 */
+	public function append_booking_shortcodes( $content ) {
+		if ( is_admin() || ! is_singular( Hoptown_Rental_Inflatable_Post_Type::POST_TYPE ) ) {
+			return $content;
+		}
+
+		if ( ! in_the_loop() || ! is_main_query() ) {
+			return $content;
+		}
+
+		$post_id    = get_the_ID();
+		$inflatable = Hoptown_Rental_Inflatable::from_id( $post_id );
+
+		$images = array();
+		if ( has_post_thumbnail( $post_id ) ) {
+			$images[] = get_post_thumbnail_id( $post_id );
+		}
+		if ( ! empty( $inflatable->gallery_ids ) ) {
+			$images = array_merge( $images, $inflatable->gallery_ids );
+		}
+		$images = array_values( array_unique( array_filter( $images ) ) );
+
+		$calendar = do_shortcode( '[hoptown_booking_calendar inflatable_id="' . $post_id . '"]' );
+		$form     = do_shortcode( '[hoptown_booking_form inflatable_id="' . $post_id . '"]' );
+		$clean_content = preg_replace( '/\[hoptown_booking_(calendar|form)[^\]]*\]/', '', $content );
+
+		ob_start();
+		?>
+		<section class="hoptown-product">
+			<div class="hoptown-product-media">
+				<?php if ( ! empty( $images ) ) : ?>
+					<div class="hoptown-product-gallery">
+						<div class="hoptown-product-main">
+							<?php if ( $images ) : ?>
+								<a href="<?php echo esc_url( wp_get_attachment_image_url( $images[0], 'full' ) ); ?>" class="hoptown-gallery-link">
+									<?php echo wp_get_attachment_image( $images[0], 'large' ); ?>
+								</a>
+							<?php endif; ?>
+						</div>
+						<?php if ( count( $images ) > 1 ) : ?>
+							<div class="hoptown-product-thumbs">
+								<?php foreach ( array_slice( $images, 1 ) as $image_id ) : ?>
+									<a href="<?php echo esc_url( wp_get_attachment_image_url( $image_id, 'full' ) ); ?>" class="hoptown-gallery-link">
+										<?php echo wp_get_attachment_image( $image_id, 'thumbnail' ); ?>
+									</a>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<div class="hoptown-product-details">
+					<?php echo $clean_content; ?>
+				</div>
+			</div>
+			<div class="hoptown-product-summary">
+				<div class="hoptown-booking-card">
+					<h2 class="hoptown-booking-title"><?php esc_html_e( 'Book This Inflatable', HOPTOWN_RENTAL_TEXTDOMAIN ); ?></h2>
+					<?php echo $calendar; ?>
+					<?php echo $form; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+
 		return ob_get_clean();
 	}
 }

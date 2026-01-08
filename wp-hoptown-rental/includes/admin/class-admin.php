@@ -77,7 +77,25 @@ class Hoptown_Rental_Admin {
 				$this->version,
 				true
 			);
+
+			wp_localize_script(
+				$this->plugin_name,
+				'hoptownAdmin',
+				array(
+					'galleryTitle'  => __( 'Select Gallery Images', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'galleryButton' => __( 'Add to Gallery', HOPTOWN_RENTAL_TEXTDOMAIN ),
+					'galleryMetaKey' => Hoptown_Rental_Meta::INFLATABLE_GALLERY,
+				)
+			);
 		}
+	}
+
+	/**
+	 * Enqueue assets in block editor context.
+	 */
+	public function enqueue_block_editor_assets() {
+		$this->enqueue_styles();
+		$this->enqueue_scripts();
 	}
 
 	/**
