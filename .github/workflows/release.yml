@@ -31,3 +31,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+      - name: Get release tag
+        id: release_tag
+        run: |
+          tag=$(git tag --points-at HEAD | head -n 1)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build plugin zip
+        if: steps.release_tag.outputs.tag != ''
+        run: zip -r "wp-hoptown-rental-${{ steps.release_tag.outputs.version }}.zip" wp-hoptown-rental
+
+      - name: Upload plugin zip
+        if: steps.release_tag.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ steps.release_tag.outputs.tag }}" "wp-hoptown-rental-${{ steps.release_tag.outputs.version }}.zip" --clobber
